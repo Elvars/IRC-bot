@@ -1,19 +1,14 @@
 #!/usr/bin/perl
-
 use DBI;
 use strict;
 use warnings;
 use utf8;
 use Data::Dumper;
 use Encode;
-binmode (STDOUT, ":utf8");
-
-my @statusCodes = ("Nyyppä", "Elvari-klubikandidaatti","Elvari-klubilainen", "Itse Elvari", "Yyber Elvari");
-my $status;
-
-package MyBot;
 use base qw(Bot::BasicBot);
 
+package MyBot;
+binmode (STDOUT, ":utf8");
 my $driver   = "SQLite";
 my $database = "IRC.db";
 my $dsn = "DBI:$driver:dbname=$database";
@@ -27,6 +22,10 @@ my $dbh = DBI->connect($dsn, $userid, $password,
 		
 	}
 );
+
+my @statusCodes = ("Nyyppä", "Elvari-klubikandidaatti","Elvari-klubilainen", "Itse Elvari", "Yyber Elvari");
+my $status;
+
 
 sub said {
       
@@ -71,20 +70,17 @@ sub said {
 
 			$sth = $dbh -> prepare ($postCountUpdate);
 			$rv = $sth ->execute($nick) or die $DBI::errstr;
-			
-		
 		}
 	}
 	
+	
 	if($message->{body}=~m/!kek/)
 	{
-		
 		my $split = $message->{body};
 		my @values = split(' ', $split);
       
 		my $nick = $values[1];
 		
-
 		my $query = qq(SELECT WHO, POSTCOUNT, SIGNATURE FROM POSTAAJAT WHERE WHO = ?;);
 		
 		
@@ -130,8 +126,7 @@ sub said {
 			body=>"Postaajan $row[0] postaukset: $row[1], status: $status, signature: $row[2]",
 			
 		);
-	
-		
+
 	}
 	
 		if($message->{body}=~m/!signature/)
@@ -143,7 +138,6 @@ sub said {
 		our $signature = $values[2];
 		
 		my $signCharCount = @{[$message =~ /(\.)/g]};;
-		
 				if($signCharCount > 20)
 		{
 			return "Liian pitkä sigu:( 20 merkkiä on maksimi";
@@ -170,10 +164,7 @@ sub said {
 		if($row[0] ne $nick && $row[0] ne $message->{who})
 		{
 			return "Ei saa asettaa toisten :(";
-		}
-			}
-		
-      
+		}	}
 }
       
       MyBot->new(

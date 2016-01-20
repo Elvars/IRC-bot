@@ -13,9 +13,7 @@ my $dbh = DBI->connect($dsn, $userid, $password, { RaiseError => 1 })
                       or die $DBI::errstr;
                       
 print "Opened database successfully\n";
-
-
-
+
 my $stmt = qq(CREATE TABLE POSTAAJAT
       (
        ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,13 +21,16 @@ my $stmt = qq(CREATE TABLE POSTAAJAT
        POSTCOUNT INTEGER	DEFAULT 1,
        STATUS TEXT              NOT NULL, 
        SIGNATURE TEXT           DEFAULT "Ei olee"
-       
        ););
        
+       
 my $rv = $dbh->do($stmt);
-if($rv < 0){
+if($rv < 0)
+{
    print $DBI::errstr;
-} else {
+} 
+else 
+{
    print "Table created successfully\n";
 }
 
